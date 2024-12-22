@@ -130,7 +130,7 @@ const query = (page = 1) => {
             },
         });
     },
-    set_subcategory = () => {
+    navigate = () => {
         let path = decodeURI(window.location.pathname).split("/");
         const category1 = path[1] || null,
             category2 = path[2] || null,
@@ -146,17 +146,54 @@ const query = (page = 1) => {
             },
             success: (data) => {
                 console.log(data);
-                if (data.length === 0) return;
-                let ol = $('<ol class="breadcrumb"></ol>');
+                let breadcrumbs = $('<ol class="breadcrumb" style="margin-bottom: 0;"></ol>'),
+                    subcat = $('<ol class="breadcrumb"></ol>');
+
+                breadcrumbs.append(
+                    '<li class="breadcrumb-item"><a href="/"><span class="material-symbols-outlined">home</span></a></li>'
+                );
+                console.log(path);
+
+                for (let i = 1; i < path.length - 1; i++)
+                    if (i === path.length - 2) breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
+                    else
+                        breadcrumbs.append(`
+                            <li class="breadcrumb-item">
+                                <a href="/${path.slice(1, i + 1).join("/")}">${path[i]}</a>
+                            </li>
+                        `);
+
+                // if (category1)
+                //     breadcrumbs.append(`<li class="breadcrumb-item"><a href="/${category1}">${category1}</a></li>`);
+                // if (category2) {
+                //     if (category3)
+                //         breadcrumbs.append(
+                //             `<li class="breadcrumb-item"><a href="/${category1}/${category2}">${category2}</a></li>`
+                //         );
+                //     else breadcrumbs.append(`<li class="breadcrumb-item active">${category2}</li>`);
+                // }
+                // if (category3) breadcrumbs.append(`<li class="breadcrumb-item active">${category3}</li>`);
+
                 for (const item of data) {
                     let path = window.location.pathname;
                     if (!path.endsWith("/")) path += "/";
-                    ol.append(`<li class="breadcrumb-item"><a href="${path}${item}">${item}</a></li>`);
+                    subcat.append(`<li class="breadcrumb-item"><a href="${path}${item}">${item}</a></li>`);
                 }
-                $("#subcategory")
+                let navigator = $("#navigator");
+                navigator
+                    .addClass("my-3")
                     .empty()
-                    .append("<div>可以再更深入一點：</div>")
-                    .append($('<nav aria-label="breadcrumb"></nav>').append(ol));
+                    .append(
+                        $('<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb"></nav>').append(
+                            breadcrumbs
+                        )
+                    );
+                if (data.length)
+                    navigator
+                        .append("<div>可以再更深入一點：</div>")
+                        .append($('<nav aria-label="breadcrumb"></nav>').append(subcat));
+
+                navigator.append("<hr />");
             },
             error: (error) => {
                 console.log(error);
@@ -173,7 +210,7 @@ window.onload = function () {
                 alert("後端 API 發生錯誤，請稍後再試。");
                 return;
             }
-            set_subcategory();
+            navigate();
             query();
         },
         error: (error) => {
