@@ -6,6 +6,10 @@
     margin-bottom: 0;
 }
 
+#products-table {
+    min-width: 500px;
+}
+
 .card {
     --margin-size: 1rem;
     width: calc(50% - var(--margin-size));
