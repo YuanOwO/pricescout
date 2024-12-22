@@ -35,7 +35,7 @@ const product_row = (product, idx) => {
         if (product.unit === "入") unit_price = `$${product.price_unit} / ${product.unit}`;
         else unit_price = `$${Math.round(product.price_unit * 10000) / 100} / 100${product.unit}`;
         let card = $(`
-            <div class="card m-2" style="width: 15em">
+            <div class="card m-2 flex-shrink-0" style="width: 15em">
                 <img
                     class="card-img-top"
                     src="${product.pic_url}"
@@ -121,10 +121,33 @@ const product_row = (product, idx) => {
         }
     },
     navigate = () => {
-        let path = decodeURI(window.location.pathname).split("/");
-        const category1 = path[1] || null,
+        const path = decodeURI(window.location.pathname).split("/"),
+            category1 = path[1] || null,
             category2 = path[2] || null,
             category3 = path[3] || null;
+
+        let breadcrumbs = $('<ol class="breadcrumb" style="margin-bottom: 0;"></ol>');
+
+        breadcrumbs.append(
+            '<li class="breadcrumb-item"><a href="/"><span class="material-symbols-outlined">home</span></a></li>'
+        );
+
+        let navigator = $("#navigator");
+        navigator
+            .addClass("my-3")
+            .empty()
+            .append(
+                $('<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb"></nav>').append(breadcrumbs)
+            );
+
+        for (let i = 1; i < path.length - 1; i++)
+            if (i === path.length - 2) breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
+            else
+                breadcrumbs.append(`
+                    <li class="breadcrumb-item">
+                        <a href="/${path.slice(1, i + 1).join("/")}">${path[i]}</a>
+                    </li>
+                `);
 
         $.ajax({
             url: API_URL + "/subcategory",
@@ -137,36 +160,14 @@ const product_row = (product, idx) => {
             success: (data) => {
                 // console.log(data);
 
-                let breadcrumbs = $('<ol class="breadcrumb" style="margin-bottom: 0;"></ol>'),
-                    subcat = $('<ol class="breadcrumb"></ol>');
-
-                breadcrumbs.append(
-                    '<li class="breadcrumb-item"><a href="/"><span class="material-symbols-outlined">home</span></a></li>'
-                );
-
-                for (let i = 1; i < path.length - 1; i++)
-                    if (i === path.length - 2) breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
-                    else
-                        breadcrumbs.append(`
-                            <li class="breadcrumb-item">
-                                <a href="/${path.slice(1, i + 1).join("/")}">${path[i]}</a>
-                            </li>
-                        `);
+                let subcat = $('<ol class="breadcrumb"></ol>');
 
                 for (const item of data) {
                     let path = window.location.pathname;
                     if (!path.endsWith("/")) path += "/";
                     subcat.append(`<li class="breadcrumb-item"><a href="${path}${item}">${item}</a></li>`);
                 }
-                let navigator = $("#navigator");
-                navigator
-                    .addClass("my-3")
-                    .empty()
-                    .append(
-                        $('<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb"></nav>').append(
-                            breadcrumbs
-                        )
-                    );
+
                 if (data.length)
                     navigator
                         .append("<div>可以再更深入一點：</div>")

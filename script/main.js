@@ -6,7 +6,7 @@ const query = (id) => {
         type: "GET",
         data: {
             category1: category,
-            limit: 5,
+            limit: Math.floor($("#wall-生鮮").width() / (16 * 15)) + 3 || 10,
         },
         success: (data) => {
             console.log(data);
@@ -25,24 +25,18 @@ const query = (id) => {
     });
 };
 
-window.onload = function () {
+window.onload = () => {
     $.ajax({
         url: API_URL,
         type: "GET",
-        success: (data) => {
-            if (data.message !== "Hello World") {
-                alert("後端 API 發生錯誤，請稍後再試。");
-                return;
-            }
-            for (const wall of $(".products-wall")) {
-                query(wall.id);
-            }
-            // navigate();
-            // query();
-        },
         error: (error) => {
             console.log(error);
             alert("後端 API 睡著了，請稍後再試。");
         },
     });
+    for (const wall of $(".products-wall")) {
+        query(wall.id);
+    }
+    // navigate();
+    // query();
 };

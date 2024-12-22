@@ -36,21 +36,15 @@ const query = (page = 1) => {
     });
 };
 
-window.onload = function () {
+window.onload = () => {
     $.ajax({
         url: API_URL,
         type: "GET",
-        success: (data) => {
-            if (data.message !== "Hello World") {
-                alert("後端 API 發生錯誤，請稍後再試。");
-                return;
-            }
-            navigate();
-            query();
-        },
         error: (error) => {
             console.log(error);
             alert("後端 API 睡著了，請稍後再試。");
         },
     });
+    navigate();
+    query();
 };
