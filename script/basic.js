@@ -35,7 +35,7 @@ const product_row = (product, idx) => {
         if (product.unit === "入") unit_price = `$${product.price_unit} / ${product.unit}`;
         else unit_price = `$${Math.round(product.price_unit * 10000) / 100} / 100${product.unit}`;
         let card = $(`
-            <div class="card m-2 flex-shrink-0" style="width: 15em">
+            <div class="card m-2 flex-shrink-0">
                 <img
                     class="card-img-top"
                     src="${product.pic_url}"
@@ -126,7 +126,7 @@ const product_row = (product, idx) => {
             category2 = path[2] || null,
             category3 = path[3] || null;
 
-        let breadcrumbs = $('<ol class="breadcrumb" style="margin-bottom: 0;"></ol>');
+        let breadcrumbs = $('<ol class="breadcrumb"></ol>');
 
         breadcrumbs.append(
             '<li class="breadcrumb-item"><a href="/"><span class="material-symbols-outlined">home</span></a></li>'
@@ -136,9 +136,7 @@ const product_row = (product, idx) => {
         navigator
             .addClass("my-3")
             .empty()
-            .append(
-                $('<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb"></nav>').append(breadcrumbs)
-            );
+            .append($('<nav id="breadcrumb" aria-label="breadcrumb"></nav>').append(breadcrumbs));
 
         for (let i = 1; i < path.length - 1; i++)
             if (i === path.length - 2) breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
