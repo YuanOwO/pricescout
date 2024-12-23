@@ -7,6 +7,10 @@ with open("static/categories.json", "r", encoding="utf-8") as f:
 with open("product.html", "r", encoding="utf-8") as f:
     product_template = f.read()
 
+os.makedirs("search", exist_ok=True)
+with open("search/index.html", "w", encoding="utf-8") as f:
+    f.write(product_template)
+
 for cat in categories["category"]:
     cat1 = cat["name"]
     folder = f"{cat1}"

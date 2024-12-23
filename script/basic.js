@@ -85,7 +85,6 @@ const product_row = (product, idx) => {
             end = total;
         }
 
-        console.log(start, end);
         pagination.empty();
 
         pagination.append(page_item(page - 1, "&laquo;", undefined, page === 1));
@@ -110,7 +109,7 @@ const product_row = (product, idx) => {
         let table = $("#products-table"),
             wall = $("#products-wall");
 
-        localStorage.setItem("view", view);
+        Cookies.set("view", view);
 
         if (view === "table") {
             table.removeClass("d-none");
@@ -121,16 +120,20 @@ const product_row = (product, idx) => {
         }
     },
     navigate = () => {
-        const path = decodeURI(window.location.pathname).split("/"),
+        let path = decodeURI(window.location.pathname).split("/"),
             category1 = path[1] || null,
             category2 = path[2] || null,
             category3 = path[3] || null;
 
+        if (category1 === "search") {
+            category1 = null;
+            category2 = null;
+            category3 = null;
+        }
+
         let breadcrumbs = $('<ol class="breadcrumb"></ol>');
 
-        breadcrumbs.append(
-            '<li class="breadcrumb-item"><a href="/"><span class="material-symbols-outlined">home</span></a></li>'
-        );
+        breadcrumbs.append('<li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>');
 
         let navigator = $("#navigator");
         navigator
@@ -138,14 +141,20 @@ const product_row = (product, idx) => {
             .empty()
             .append($('<nav id="breadcrumb" aria-label="breadcrumb"></nav>').append(breadcrumbs));
 
-        for (let i = 1; i < path.length - 1; i++)
-            if (i === path.length - 2) breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
-            else
+        for (let i = 1; i < path.length - 1; i++) {
+            if (path[i] === "search") {
+                path[i] = "搜尋";
+            }
+            if (i === path.length - 2) {
+                breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
+            } else {
                 breadcrumbs.append(`
                     <li class="breadcrumb-item">
                         <a href="/${path.slice(1, i + 1).join("/")}">${path[i]}</a>
                     </li>
                 `);
+            }
+        }
 
         $.ajax({
             url: API_URL + "/subcategory",
@@ -163,6 +172,7 @@ const product_row = (product, idx) => {
                 for (const item of data) {
                     let path = window.location.pathname;
                     if (!path.endsWith("/")) path += "/";
+                    if (path === "/search/") path = "/";
                     subcat.append(`<li class="breadcrumb-item"><a href="${path}${item}">${item}</a></li>`);
                 }
 
@@ -178,3 +188,21 @@ const product_row = (product, idx) => {
             },
         });
     };
+
+(() => {
+    // 變更網頁標題
+    let path = decodeURI(window.location.pathname).split("/"),
+        title = path.slice(1, -1).join("．");
+    if (title === "about") title = "關於";
+    if (title === "search") title = "搜尋";
+    if (title !== "") document.title = "超市商品比價網 | " + title;
+
+    // 設定導覽列
+    if (path[1] !== "search") {
+        $("#nav-" + path[1]).addClass("active");
+        // location = location.href.split("?")[0];
+    }
+
+    // 設定檢視模式
+    toggleView(Cookies.get("view") || "table");
+})();

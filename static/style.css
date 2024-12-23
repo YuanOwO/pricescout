@@ -15,20 +15,39 @@
     width: calc(50% - var(--margin-size));
 }
 
+/* sm */
 @media (min-width: 576px) {
     .card {
         width: calc(33% - var(--margin-size));
     }
 }
 
+/* md */
+@media (min-width: 768px) {
+}
+
+/* lg */
 @media (min-width: 992px) {
     .card {
         width: calc(25% - var(--margin-size));
     }
+
+    #nav-search {
+        width: 10rem;
+    }
 }
 
+/* xl */
 @media (min-width: 1200px) {
     .card {
         width: calc(20% - var(--margin-size));
     }
+
+    #nav-search {
+        width: auto;
+    }
+}
+
+/* xxl */
+@media (min-width: 1400px) {
 }
