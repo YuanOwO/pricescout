@@ -34,6 +34,8 @@ const query = (page = 1) => {
             table.empty();
             wall.empty();
 
+            $("#total-count").text(data.total_count);
+
             if (data.products.length === 0) {
                 table.append(`
                     <tr>
