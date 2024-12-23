@@ -56,8 +56,9 @@ const product_row = (product, idx) => {
                         href="${product.url}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        >前往賣場</a
                     >
+                        前往賣場<i class="bi bi-box-arrow-up-right ms-2"></i>
+                    </a>
                 </div>
             </div>
         `);
