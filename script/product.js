@@ -40,13 +40,13 @@ const query = (page = 1) => {
                 table.append(`
                     <tr>
                         <td colspan="7" class="">
-                        
-                    <div class="alert alert-danger my-3" role="alert">
-                        <div class="fs-2">喔不！<i class="bi bi-emoji-frown"></i></div>
-                        這裡找不到你想要的商品！
-                        <br>
-                        你可以試試看調整搜尋範圍，或是回到<a href="/">首頁</a>看看其他商品！
-                    </div></td>
+                            <div class="alert alert-danger d-inline-block my-3" role="alert">
+                                <div class="fs-2">喔不！<i class="bi bi-emoji-frown"></i></div>
+                                這裡找不到你想要的商品！
+                                <br>
+                                你可以試試看調整搜尋範圍，或是回到<a href="/">首頁</a>看看其他商品！
+                            </div>
+                        </td>
                     </tr>
                 `);
                 wall.append(`
