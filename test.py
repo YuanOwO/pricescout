@@ -17,6 +17,7 @@ def keep_alive():
             time.sleep(60)
         except KeyboardInterrupt:
             print('Program stopped.')
+            break
 
 
 if __name__ == '__main__':
