@@ -42,6 +42,11 @@ window.onload = () => {
         Cookies.set("hello", "world");
     }
 
+    if (sessionStorage.getItem("query")) {
+        // 刪除過去的搜尋條件
+        sessionStorage.removeItem("query");
+    }
+
     for (const wall of $(".products-wall")) {
         query(wall.id);
     }

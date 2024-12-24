@@ -13,7 +13,7 @@ const query = (page = 1) => {
         category3 = undefined;
     }
 
-    Cookies.set("query", query);
+    sessionStorage.setItem("query", query);
 
     $.ajax({
         url: API_URL + "/products",
@@ -86,12 +86,12 @@ window.onload = () => {
         const params = new URLSearchParams(location.search);
         if (params.has("query")) {
             let q = params.get("query");
-            Cookies.set("query", q);
+            sessionStorage.setItem("query", q);
         }
     }
 
     if (Cookies.get("query")) {
-        $("#search").val(Cookies.get("query"));
+        $("#search").val(sessionStorage.getItem("query"));
     }
 
     $("#search").keyup((e) => {
