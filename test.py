@@ -2,7 +2,7 @@ import time
 
 import requests
 
-URL = 'https://pricescout.yuanowo.xyz/'
+URL = 'https://api.pricescout.yuanowo.xyz/api/v1/healthz'
 
 
 def keep_alive():
