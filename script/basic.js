@@ -1,4 +1,5 @@
 const API_URL = "https://api.pricescout.yuanowo.xyz/api/v1";
+// const API_URL = "http://localhost:5000/api/v1";
 
 const product_row = (product, idx) => {
         let unit_price;
@@ -190,7 +191,7 @@ const product_row = (product, idx) => {
         });
     };
 
-(() => {
+window.addEventListener("load", () => {
     // 變更網頁標題
     let path = decodeURI(window.location.pathname).split("/"),
         title = path.slice(1, -1).join("．");
@@ -206,4 +207,28 @@ const product_row = (product, idx) => {
 
     // 設定檢視模式
     toggleView(Cookies.get("view") || "table");
-})();
+
+    // 檢查 API 連線
+    if (!Cookies.get("api_health")) {
+        $.ajax({
+            url: API_URL + "/healthz",
+            type: "GET",
+            success: (data) => {
+                // console.log(data);
+                console.log("API 連線成功！");
+                Cookies.set("api_health", "ok", { expires: 10 / 60 / 24 });
+            },
+            error: (error, textStatus, errorThrown) => {
+                console.log(error);
+                console.log(textStatus);
+                console.log(errorThrown);
+                if (textStatus === "timeout") {
+                    alert("後端 API 睡著了，請稍後再試。");
+                } else {
+                    alert("後端 API 錯誤，請聯繫網站管理員。");
+                }
+            },
+            timeout: 5000,
+        });
+    }
+});

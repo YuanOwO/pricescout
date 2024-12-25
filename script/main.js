@@ -26,15 +26,6 @@ const query = (id) => {
 };
 
 window.onload = () => {
-    $.ajax({
-        url: API_URL,
-        type: "GET",
-        error: (error) => {
-            console.log(error);
-            alert("後端 API 睡著了，請稍後再試。");
-        },
-    });
-
     if (!Cookies.get("hello")) {
         // 第一次進入網站
         const modal = new bootstrap.Modal("#infoModal");

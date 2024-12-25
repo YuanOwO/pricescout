@@ -73,15 +73,6 @@ const query = (page = 1) => {
 };
 
 window.onload = () => {
-    $.ajax({
-        url: API_URL,
-        type: "GET",
-        error: (error) => {
-            console.log(error);
-            alert("後端 API 睡著了，請稍後再試。");
-        },
-    });
-
     if (location.search) {
         const params = new URLSearchParams(location.search);
         if (params.has("query")) {
