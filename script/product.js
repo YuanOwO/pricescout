@@ -13,7 +13,19 @@ const query = (page = 1) => {
         category3 = undefined;
     }
 
+    if (category1 === "冷藏") {
+        category1 = "冷藏食品";
+    }
+
     sessionStorage.setItem("query", query);
+
+    console.log("products query", {
+        category1: category1,
+        category2: category2,
+        category3: category3,
+        query: query,
+        page: page,
+    });
 
     $.ajax({
         url: API_URL + "/products",
@@ -64,7 +76,8 @@ const query = (page = 1) => {
                 wall.append(product_card(product));
             }
 
-            paginate("#pagination", data.page, Math.ceil(data.total_count / data.limit) || 1);
+            paginate("#pagination-top", data.page, Math.ceil(data.total_count / data.limit) || 1);
+            paginate("#pagination-bottom", data.page, Math.ceil(data.total_count / data.limit) || 1);
         },
         error: (error) => {
             console.log(error);
@@ -81,7 +94,7 @@ window.onload = () => {
         }
     }
 
-    if (Cookies.get("query")) {
+    if (sessionStorage.getItem("query")) {
         $("#search").val(sessionStorage.getItem("query"));
     }
 
@@ -91,4 +104,8 @@ window.onload = () => {
 
     navigate();
     query();
+
+    document
+        .querySelectorAll('[data-bs-toggle="tooltip"]')
+        .forEach((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 };

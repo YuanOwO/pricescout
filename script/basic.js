@@ -111,7 +111,7 @@ const product_row = (product, idx) => {
         let table = $("#products-table"),
             wall = $("#products-wall");
 
-        Cookies.set("view", view);
+        localStorage.setItem("view", view);
 
         if (view === "table") {
             table.removeClass("d-none");
@@ -133,6 +133,10 @@ const product_row = (product, idx) => {
             category3 = null;
         }
 
+        if (category1 === "冷藏") {
+            category1 = "冷藏食品";
+        }
+
         let breadcrumbs = $('<ol class="breadcrumb"></ol>');
 
         breadcrumbs.append('<li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>');
@@ -147,6 +151,7 @@ const product_row = (product, idx) => {
             if (path[i] === "search") {
                 path[i] = "搜尋";
             }
+
             if (i === path.length - 2) {
                 breadcrumbs.append(`<li class="breadcrumb-item active">${path[i]}</li>`);
             } else {
@@ -171,10 +176,13 @@ const product_row = (product, idx) => {
 
                 let subcat = $('<ol class="breadcrumb"></ol>');
 
-                for (const item of data) {
+                for (let item of data) {
                     let path = window.location.pathname;
                     if (!path.endsWith("/")) path += "/";
-                    if (path === "/search/") path = "/";
+                    if (path === "/search/") {
+                        path = "/";
+                        if (item === "冷藏食品") item = "冷藏";
+                    }
                     subcat.append(`<li class="breadcrumb-item"><a href="${path}${item}">${item}</a></li>`);
                 }
 
@@ -206,7 +214,7 @@ window.addEventListener("load", () => {
     }
 
     // 設定檢視模式
-    toggleView(Cookies.get("view") || "table");
+    toggleView(localStorage.getItem("view") || "table");
 
     // 檢查 API 連線
     if (!Cookies.get("api_health")) {

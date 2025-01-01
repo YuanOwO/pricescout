@@ -1,6 +1,12 @@
 const query = (id) => {
     // console.log(id);
     const category = id.split("-")[1];
+
+    console.log("products query", {
+        category1: category,
+        limit: Math.floor($("#wall-生鮮").width() / (16 * 15)) + 3 || 10,
+    });
+
     $.ajax({
         url: API_URL + "/products",
         type: "GET",
@@ -26,15 +32,15 @@ const query = (id) => {
 };
 
 window.onload = () => {
+    // 第一次進入網站
     if (!Cookies.get("hello")) {
-        // 第一次進入網站
         const modal = new bootstrap.Modal("#infoModal");
         modal.show();
         Cookies.set("hello", "world");
     }
 
+    // 刪除過去的搜尋條件
     if (sessionStorage.getItem("query")) {
-        // 刪除過去的搜尋條件
         sessionStorage.removeItem("query");
     }
 

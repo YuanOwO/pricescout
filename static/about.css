@@ -1,0 +1,32 @@
+section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    /* width: 80%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+section h2 {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--bs-border-color);
+}
+section h2 a {
+    opacity: 0;
+    color: var(--bs-secondary-color);
+    margin-left: 0.5rem;
+    text-decoration: none;
+}
+
+section h2:hover a {
+    opacity: 1;
+}
+section h2 a::after {
+    content: "#";
+}
+
+section p {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
