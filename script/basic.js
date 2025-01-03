@@ -36,7 +36,7 @@ const product_row = (product, idx) => {
         if (product.unit === "入") unit_price = `$${product.price_unit} / ${product.unit}`;
         else unit_price = `$${Math.round(product.price_unit * 10000) / 100} / 100${product.unit}`;
         let card = $(`
-            <div class="card m-2 flex-shrink-0">
+            <div class="card flex-shrink-0 m-2">
                 <img
                     class="card-img-top"
                     src="${product.pic_url}"
@@ -239,4 +239,7 @@ window.addEventListener("load", () => {
             timeout: 5000,
         });
     }
+    document.querySelector(".footer p:nth-child(1)").addEventListener("click", () => {
+        location.href = "https://youtu.be/dQw4w9WgXcQ";
+    });
 });
