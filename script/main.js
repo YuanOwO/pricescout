@@ -67,6 +67,6 @@ window.onload = () => {
                 </div>
             </div>
         `.repeat(Math.floor(Math.random() * 5) + 1);
-        // query(wall.id);
+        query(wall.id);
     }
 };
